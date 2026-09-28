@@ -1,12 +1,16 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from "react";
+import { Footer } from "./_components/footer";
 
-function layout({ children }: { children: ReactNode }) {
+function PublicLayout({ children }: { children: ReactNode }) {
     return (
-        <div>
-            This is public layout
-            {children}
+        <div className="flex min-h-screen flex-col bg-background">
+            <main className="flex-1">
+                {children}
+            </main>
+
+            <Footer />
         </div>
-    )
+    );
 }
 
-export default layout
+export default PublicLayout;
