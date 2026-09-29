@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 import { SignupZodSchema } from "@/validation/auth.validation";
+import GoogleButton from "@/components/shared/google";
 
 function SignupForm() {
     const [showPassword, setShowPassword] = useState(false);
@@ -384,13 +385,7 @@ function SignupForm() {
                 </div>
 
                 {/* Google */}
-                <Button
-                    type="button"
-                    variant="outline"
-                    className="h-9 w-full"
-                >
-                    Continue with Google
-                </Button>
+                <GoogleButton />
             </form>
         </div>
     );
