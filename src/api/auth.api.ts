@@ -39,3 +39,10 @@ export function signupApi(payload: ISignup) {
     body: formData,
   });
 }
+
+export function verifyEmailApi(payload: { email: string; otp: string }) {
+  return apiClinet("/user/verify-email", {
+    method: "POST",
+    body: payload,
+  });
+}

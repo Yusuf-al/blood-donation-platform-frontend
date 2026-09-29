@@ -20,6 +20,8 @@ import { ISignup } from "@/types/signup.type";
 import { useSignup } from "@/hooks";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { email } from "zod";
+import { Spinner } from "@/components/ui/spinner";
 
 function SignupForm() {
     const [showPassword, setShowPassword] = useState(false);
@@ -33,8 +35,8 @@ function SignupForm() {
             name: "",
             email: "",
             phone: "",
-            password: "",
-            confirmPassword: "",
+            password: "Abc@123",
+            confirmPassword: "Abc@123",
             profileImage: null as File | null,
         },
 
@@ -50,17 +52,14 @@ function SignupForm() {
                 password: value.password,
                 imageUrl: value.profileImage,
             }
-
-
             signup(signupData, {
                 onSuccess: () => {
                     toast.success("Account has been created.", {
                         description: "Please verify your account first"
                     })
-                    router.push('/login')
+                    router.push(`/verify-email?email=${signupData.email}`)
                 },
                 onError: () => {
-
                     toast.success("Issue in creating new account.Please try again")
                 }
             })
@@ -393,10 +392,10 @@ function SignupForm() {
 
                 {/* Create Account */}
                 <Button
+                    disabled={isPending ? true : false}
                     type="submit"
-                    className="h-9 w-full bg-red-600 text-white hover:bg-red-700"
-                >
-                    Create account
+                    className="h-11 w-full bg-red-600 text-white hover:bg-red-700"
+                >                    {isPending ? <><Spinner /> Creating Account...</> : "Create Account"}
                 </Button>
 
                 {/* Divider */}
