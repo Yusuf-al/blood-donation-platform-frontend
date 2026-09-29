@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query"
 
 import ProfileDropdown from "./profile-dropdown";
 import { useLogout, useProfile } from "@/hooks";
@@ -44,18 +45,15 @@ function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const { data, isLoading } = useProfile();
     const { mutate: logout } = useLogout();
+
+    const queryClient = useQueryClient()
+
     const user = data
-
         ? {
-
             name: data?.data?.name,
-
             email: data?.data?.email,
-
             imageUrl: data?.data?.imageUrl ?? null,
-
         }
-
         : null;
 
 
@@ -64,6 +62,7 @@ function Navbar() {
             onSuccess: () => {
                 toast.success("Logout successful!");
                 setMobileOpen(false);
+                queryClient.removeQueries({ queryKey: ["user"] })
             },
             onError: () => {
                 toast.error("Logout failed. Please try again.");

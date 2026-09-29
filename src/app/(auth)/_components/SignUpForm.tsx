@@ -16,11 +16,17 @@ import { Separator } from "@/components/ui/separator";
 
 import { SignupZodSchema } from "@/validation/auth.validation";
 import GoogleButton from "@/components/shared/google";
+import { ISignup } from "@/types/signup.type";
+import { useSignup } from "@/hooks";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 function SignupForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const { mutate: signup, isPending } = useSignup()
+    const router = useRouter()
 
     const form = useForm({
         defaultValues: {
@@ -37,7 +43,27 @@ function SignupForm() {
         },
 
         onSubmit: ({ value }) => {
-            console.log(value);
+            const signupData: ISignup = {
+                name: value.name,
+                email: value.email,
+                phone: value.phone,
+                password: value.password,
+                imageUrl: value.profileImage,
+            }
+
+
+            signup(signupData, {
+                onSuccess: () => {
+                    toast.success("Account has been created.", {
+                        description: "Please verify your account first"
+                    })
+                    router.push('/login')
+                },
+                onError: () => {
+
+                    toast.success("Issue in creating new account.Please try again")
+                }
+            })
         },
     });
 
