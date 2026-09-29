@@ -6,3 +6,11 @@ export function LoginApi(payload: { email: string; password: string }) {
     body: payload,
   });
 }
+
+export function LogoutApi() {
+  return apiClinet("/auth/logout", { method: "POST" });
+}
+
+export function getMe() {
+  return apiClinet("/user/me");
+}
