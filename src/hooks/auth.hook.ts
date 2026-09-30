@@ -1,8 +1,11 @@
 import {
+  forgetPasswordApi,
   getMe,
   googleAuth,
   LoginApi,
   LogoutApi,
+  resendOtpApi,
+  resetPasswordApi,
   signupApi,
   verifyEmailApi,
 } from "@/api";
@@ -23,6 +26,24 @@ export function useSignup() {
 export function useVerifyEmail() {
   return useMutation({
     mutationFn: verifyEmailApi,
+  });
+}
+
+export function useForgetPassword() {
+  return useMutation({
+    mutationFn: forgetPasswordApi,
+  });
+}
+
+export function useResetPassword() {
+  return useMutation({
+    mutationFn: resetPasswordApi,
+  });
+}
+
+export function useResendOtp() {
+  return useMutation({
+    mutationFn: resendOtpApi,
   });
 }
 

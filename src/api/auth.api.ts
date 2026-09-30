@@ -46,3 +46,28 @@ export function verifyEmailApi(payload: { email: string; otp: string }) {
     body: payload,
   });
 }
+
+export function forgetPasswordApi(payload: { email: string }) {
+  return apiClinet("/auth/forget-password", {
+    method: "POST",
+    body: payload,
+  });
+}
+
+export function resendOtpApi(payload: { email: string }) {
+  return apiClinet("/auth/resend-otp", {
+    method: "POST",
+    body: payload,
+  });
+}
+
+export function resetPasswordApi(payload: {
+  email: string;
+  password: string;
+  otp: string;
+}) {
+  return apiClinet("/auth/reset-password", {
+    method: "POST",
+    body: payload,
+  });
+}

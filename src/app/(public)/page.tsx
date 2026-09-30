@@ -11,6 +11,7 @@ import DonorSection from './_components/home/donor-section';
 import TestimonialsSection from './_components/home/testimonials-section';
 import FaqSection from './_components/home/faq-section';
 import CtaSection from './_components/home/cta-section';
+import PremiumPricingSection from './_components/home/premium-pricing-section';
 
 function HomePage() {
     return (
@@ -19,6 +20,7 @@ function HomePage() {
             <ImpactSection />
             <ProblemSection />
             <SolutionSection />
+            <PremiumPricingSection />
             <FeaturesSection />
             <HowItWorksSection />
             <BloodGroupsSection />

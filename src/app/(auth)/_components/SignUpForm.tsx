@@ -60,7 +60,7 @@ function SignupForm() {
                     router.push(`/verify-email?email=${signupData.email}`)
                 },
                 onError: () => {
-                    toast.success("Issue in creating new account.Please try again")
+                    toast.warning("Issue in creating new account.Please try again")
                 }
             })
         },

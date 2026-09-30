@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, EyeOff, HeartPulse, Loader2 } from "lucide-react";
+import { HeartPulse } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -19,40 +19,6 @@ import { Separator } from "@/components/ui/separator";
 import LoginForm from "../_components/LoginForm";
 
 export default function LoginPage() {
-    const [showPassword, setShowPassword] = useState(false);
-    const [loading, setLoading] = useState(false);
-
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-    });
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        setLoading(true);
-
-        try {
-            // Connect this to your FASTBlood API
-            console.log("Login:", formData);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleGoogleLogin = () => {
-        // Connect this to your Google OAuth endpoint
-        console.log("Google Login");
-    };
 
     return (
         <main className="min-h-screen bg-background">

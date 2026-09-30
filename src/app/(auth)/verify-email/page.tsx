@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useVerifyEmail } from "@/hooks";
+import { useResendOtp, useVerifyEmail } from "@/hooks";
 import { Spinner } from "@/components/ui/spinner";
 
 function VerifyEmailPage() {
@@ -28,6 +28,7 @@ function VerifyEmailPage() {
     const [isResending, setIsResending] = useState(false);
     const [countdown, setCountdown] = useState(60);
     const { mutate: verifyEmail, isPending } = useVerifyEmail()
+    const { mutate: resendOtp } = useResendOtp()
 
     useEffect(() => {
         if (countdown <= 0) return;
@@ -58,7 +59,8 @@ function VerifyEmailPage() {
                     toast.success("Email verified successfully!");
                     router.push("/login");
                 },
-                onError: () => {
+                onError: (err) => {
+                    console.log(err)
                     toast.error("Email verified failed!");
                 }
             })
@@ -76,17 +78,19 @@ function VerifyEmailPage() {
 
         try {
             setIsResending(true);
-
-            // TODO: connect resend OTP API
-            //
-            // await resendVerificationOtpApi({
-            //   email,
-            // });
-
-            await new Promise((resolve) => setTimeout(resolve, 800));
-
-            setCountdown(60);
-            toast.success("A new OTP has been sent to your email.");
+            const userEmail = {
+                email
+            }
+            resendOtp(userEmail, {
+                onSuccess: () => {
+                    setCountdown(60);
+                    toast.success("A new OTP has been sent to your email.");
+                },
+                onError: (err) => {
+                    console.log(err)
+                    toast.error("Failed to resend OTP. Please try again.");
+                }
+            })
         } catch (error) {
             toast.error("Failed to resend OTP. Please try again.");
         } finally {

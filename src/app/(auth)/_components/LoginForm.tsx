@@ -54,7 +54,6 @@ function LoginForm() {
                         "Login Failed", {
                         position: "top-right",
                     })
-                    console.log(err)
                 }
             })
         },

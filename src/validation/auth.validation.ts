@@ -57,3 +57,40 @@ export const SignupZodSchema = z
     message: "Passwords do not match.",
     path: ["confirmPassword"],
   });
+
+export const forgetPassZodSchema = z.object({
+  email: z.email("Invalid email address."),
+});
+
+export const resetPassZodSchema = z
+  .object({
+    otp: z
+      .string({ message: "Name must be a string." })
+      .length(6, "OTP must be at 6 characters long."),
+
+    password: z
+      .string()
+      .min(6, "Password must be at least 6 characters long.")
+      .regex(/[a-z]/, "Password must contain at least 1 lowercase letter.")
+      .regex(/[A-Z]/, "Password must contain at least 1 uppercase letter.")
+      .regex(/[0-9]/, "Password must contain at least 1 number.")
+      .regex(
+        /[^A-Za-z0-9]/,
+        "Password must contain at least 1 special character.",
+      ),
+
+    confirmPassword: z
+      .string()
+      .min(6, "Password must be at least 6 characters long.")
+      .regex(/[a-z]/, "Password must contain at least 1 lowercase letter.")
+      .regex(/[A-Z]/, "Password must contain at least 1 uppercase letter.")
+      .regex(/[0-9]/, "Password must contain at least 1 number.")
+      .regex(
+        /[^A-Za-z0-9]/,
+        "Password must contain at least 1 special character.",
+      ),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
