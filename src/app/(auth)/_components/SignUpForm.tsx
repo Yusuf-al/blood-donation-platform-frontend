@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, ImagePlus } from "lucide-react";
+import { Eye, EyeOff, FileText, FileUp, ImagePlus, X } from "lucide-react";
 import { useForm } from "@tanstack/react-form";
 
 import {
@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { email } from "zod";
 import { Spinner } from "@/components/ui/spinner";
+import { isAcceptedFileSize, isAcceptedFileTypes, MAX_FILE_SIZE } from "@/validation/profileImage.validation";
 
 function SignupForm() {
     const [showPassword, setShowPassword] = useState(false);
@@ -78,60 +79,127 @@ function SignupForm() {
                 <FieldGroup className="gap-3">
                     {/* Profile Image */}
                     <form.Field name="profileImage">
-                        {(field) => (
-                            <Field className="gap-1.5">
-                                <FieldLabel htmlFor={field.name}>
-                                    Profile image
-                                </FieldLabel>
+                        {(field) => {
+                            const imageFile = field.state.value
+                            return (
 
-                                <div className="flex items-center gap-3">
-                                    {/* Preview */}
-                                    <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full border bg-slate-50">
-                                        {imagePreview ? (
-                                            <img
-                                                src={imagePreview}
-                                                alt="Profile preview"
-                                                className="h-full w-full object-cover"
-                                            />
-                                        ) : (
-                                            <ImagePlus className="h-5 w-5 text-slate-400" />
+                                <Field className="gap-2">
+                                    <FieldLabel htmlFor={field.name}>
+                                        Profile image
+                                    </FieldLabel>
+
+                                    <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3">
+                                        <div className="flex items-center gap-4">
+                                            {/* Image Preview */}
+                                            <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-white bg-red-50 shadow-sm ring-1 ring-slate-200">
+                                                {imagePreview ? (
+                                                    <img
+                                                        src={imagePreview}
+                                                        alt="Profile preview"
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <ImagePlus className="h-6 w-6 text-red-400" />
+                                                )}
+                                            </div>
+
+                                            {/* Upload Area */}
+                                            <div className="min-w-0 flex-1">
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    <Button
+                                                        type="button"
+                                                        render={<label htmlFor={field.name} />}
+                                                        nativeButton={false}
+                                                        variant="outline"
+                                                        className="h-9 cursor-pointer gap-2 border-slate-200 bg-white px-3 text-sm font-medium hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                                                    >
+                                                        <FileUp className="h-4 w-4" />
+                                                        {imageFile ? "Change image" : "Upload image"}
+                                                    </Button>
+
+                                                    {imageFile && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                field.handleChange(null);
+                                                                field.handleBlur();
+                                                                setImagePreview(null);
+                                                            }}
+                                                            className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-sm font-medium text-slate-500 transition-colors hover:bg-red-50 hover:text-red-600"
+                                                        >
+                                                            <X className="h-4 w-4" />
+                                                            Remove
+                                                        </button>
+                                                    )}
+                                                </div>
+
+                                                {/* File Input */}
+                                                <Input
+                                                    id={field.name}
+                                                    name={field.name}
+                                                    type="file"
+                                                    accept="image/jpeg,image/jpg,image/png"
+                                                    className="sr-only"
+                                                    onChange={(e) => {
+                                                        const file = e.target.files?.[0] ?? null;
+
+                                                        if (
+                                                            file &&
+                                                            (!isAcceptedFileSize(file.size) ||
+                                                                !isAcceptedFileTypes(file.type))
+                                                        ) {
+                                                            field.handleBlur();
+                                                            return;
+                                                        }
+
+                                                        field.handleChange(file);
+
+                                                        if (file) {
+                                                            setImagePreview(URL.createObjectURL(file));
+                                                        } else {
+                                                            setImagePreview(null);
+                                                        }
+                                                    }}
+                                                />
+
+                                                {/* File information */}
+                                                <div className="mt-2 min-w-0">
+                                                    {imageFile ? (
+                                                        <div className="flex min-w-0 items-center gap-1.5 text-xs text-slate-600">
+                                                            <FileText className="h-3.5 w-3.5 shrink-0 text-red-500" />
+
+                                                            <span className="truncate font-medium">
+                                                                {imageFile.name}
+                                                            </span>
+
+                                                            <span className="shrink-0 text-slate-400">
+                                                                {(imageFile.size / 1024 / 1024).toFixed(2)} MB
+                                                            </span>
+                                                        </div>
+                                                    ) : (
+                                                        <p className="text-xs text-slate-400">
+                                                            JPG, JPEG or PNG · Maximum {MAX_FILE_SIZE} MB
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Validation Error */}
+                                    {field.state.meta.isTouched &&
+                                        !field.state.meta.isValid && (
+                                            <FieldError errors={field.state.meta.errors} />
                                         )}
-                                    </div>
+                                </Field>
 
-                                    {/* File Input */}
-                                    <div className="flex-1">
-                                        <Input
-                                            id={field.name}
-                                            name={field.name}
-                                            type="file"
-                                            accept="image/*"
-                                            className="h-9 cursor-pointer"
-                                            onChange={(e) => {
-                                                const file =
-                                                    e.target.files?.[0] ?? null;
 
-                                                field.handleChange(file);
 
-                                                if (file) {
-                                                    setImagePreview(
-                                                        URL.createObjectURL(file)
-                                                    );
-                                                } else {
-                                                    setImagePreview(null);
-                                                }
-                                            }}
-                                        />
-                                    </div>
-                                </div>
+                            )
+                        }}
 
-                                {field.state.meta.isTouched &&
-                                    !field.state.meta.isValid && (
-                                        <FieldError
-                                            errors={field.state.meta.errors}
-                                        />
-                                    )}
-                            </Field>
-                        )}
+
+
                     </form.Field>
 
                     {/* Name */}
