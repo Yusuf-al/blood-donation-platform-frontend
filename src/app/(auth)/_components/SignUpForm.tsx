@@ -192,9 +192,6 @@ function SignupForm() {
                                             <FieldError errors={field.state.meta.errors} />
                                         )}
                                 </Field>
-
-
-
                             )
                         }}
 

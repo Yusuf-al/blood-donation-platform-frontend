@@ -6,10 +6,6 @@ import Providers from "@/providers";
 import { Footer } from "./(public)/_components/footer";
 import { Toaster } from "@/components/ui/sonner";
 
-
-
-
-
 const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
