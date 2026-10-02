@@ -22,6 +22,9 @@ import {
 } from "@/components/ui/field";
 import { useBecomeDonor } from "@/hooks/donor.hook";
 import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
+import { BecomeDonorZodSchema } from "@/validation/donor.validation";
+import { DatePicker } from "@/components/shared/calender";
 
 const bloodGroups = [
     "A+",
@@ -34,15 +37,7 @@ const bloodGroups = [
     "O-",
 ] as const;
 
-type DonorFormData = {
-    bloodGroup: string;
-    dateOfBirth: string;
-    city: string;
-    address: string;
-    lastDonationDate?: string | null;
-};
-
-const initialValues: DonorFormData = {
+const initialValues = {
     bloodGroup: "",
     dateOfBirth: "",
     city: "",
@@ -56,6 +51,9 @@ function BecomeDonorForm() {
 
     const form = useForm({
         defaultValues: initialValues,
+        validators: {
+            onSubmit: BecomeDonorZodSchema
+        },
 
         onSubmit: async ({ value }) => {
             try {
@@ -71,7 +69,10 @@ function BecomeDonorForm() {
                 BecomeDonor(donorData, {
                     onSuccess: () => {
                         toast.success(
-                            "Your donor registration has been submitted successfully!"
+                            "Your donor request has been submitted successfully!",
+                            {
+                                description: "Once this request is approved you will get a confirmation email"
+                            }
                         );
                         router.push("/")
                     },
@@ -122,15 +123,6 @@ function BecomeDonorForm() {
                     {/* Blood Group */}
                     <form.Field
                         name="bloodGroup"
-                        validators={{
-                            onChange: ({ value }) => {
-                                if (!value) {
-                                    return "Please select your blood group.";
-                                }
-
-                                return undefined;
-                            },
-                        }}
                     >
                         {(field) => {
                             const isInvalid =
@@ -174,7 +166,7 @@ function BecomeDonorForm() {
 
                                     {isInvalid && (
                                         <FieldError
-                                        //   errors={field.state.meta.errors}
+                                            errors={field.state.meta.errors}
                                         />
                                     )}
                                 </Field>
@@ -187,15 +179,7 @@ function BecomeDonorForm() {
                         {/* Date of Birth */}
                         <form.Field
                             name="dateOfBirth"
-                            validators={{
-                                onChange: ({ value }) => {
-                                    if (!value) {
-                                        return "Date of birth is required.";
-                                    }
 
-                                    return undefined;
-                                },
-                            }}
                         >
                             {(field) => {
                                 const isInvalid =
@@ -209,7 +193,7 @@ function BecomeDonorForm() {
                                             <span className="text-red-600">*</span>
                                         </FieldLabel>
 
-                                        <div className="relative">
+                                        {/* <div className="relative">
                                             <CalendarDays className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
                                             <Input
@@ -224,11 +208,14 @@ function BecomeDonorForm() {
                                                 className="h-11 pl-10"
                                                 aria-invalid={isInvalid}
                                             />
-                                        </div>
-
+                                        </div> */}
+                                        <DatePicker value={field.state.value}
+                                            onChange={field.handleChange}
+                                            placeholder="Date of birth"
+                                            maxDate={new Date()} />
                                         {isInvalid && (
                                             <FieldError
-                                            // errors={field.state.meta.errors}
+                                                errors={field.state.meta.errors}
                                             />
                                         )}
                                     </Field>
@@ -239,15 +226,7 @@ function BecomeDonorForm() {
                         {/* City */}
                         <form.Field
                             name="city"
-                            validators={{
-                                onChange: ({ value }) => {
-                                    if (!value.trim()) {
-                                        return "City is required.";
-                                    }
 
-                                    return undefined;
-                                },
-                            }}
                         >
                             {(field) => {
                                 const isInvalid =
@@ -281,7 +260,7 @@ function BecomeDonorForm() {
 
                                         {isInvalid && (
                                             <FieldError
-                                            // errors={field.state.meta.errors}
+                                                errors={field.state.meta.errors}
                                             />
                                         )}
                                     </Field>
@@ -334,18 +313,10 @@ function BecomeDonorForm() {
                                 </FieldLabel>
 
                                 <div className="relative">
-                                    <CalendarDays className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-
-                                    <Input
-                                        id={field.name}
-                                        name={field.name}
-                                        type="date"
-                                        value={field.state.value ?? ""}
-                                        onChange={(e) =>
-                                            field.handleChange(e.target.value)
-                                        }
-                                        onBlur={field.handleBlur}
-                                        className="h-11 pl-10"
+                                    <DatePicker value={field.state.value}
+                                        onChange={field.handleChange}
+                                        placeholder="Last Donation Date"
+                                        maxDate={new Date()}
                                     />
                                 </div>
 
@@ -376,32 +347,25 @@ function BecomeDonorForm() {
 
                 {/* Submit */}
                 <div className="mt-6">
-                    <form.Subscribe
-                        selector={(state) => [
-                            state.canSubmit,
-                            state.isSubmitting,
-                        ]}
+
+                    <Button
+                        type="submit"
+                        disabled={submitting ? true : false}
+                        className="h-11 w-full bg-red-600 font-semibold hover:bg-red-700 sm:w-auto sm:min-w-48"
                     >
-                        {([canSubmit, isSubmitting]) => (
-                            <Button
-                                type="submit"
-                                disabled={!canSubmit || isSubmitting}
-                                className="h-11 w-full bg-red-600 font-semibold hover:bg-red-700 sm:w-auto sm:min-w-48"
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <Loader2 className="h-4 w-4 animate-spin" />
-                                        Submitting...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Send className="h-4 w-4" />
-                                        Become a Donor
-                                    </>
-                                )}
-                            </Button>
+                        {submitting ? (
+                            <>
+                                <Spinner className="h-4 w-4 animate-spin" />
+                                Submitting...
+                            </>
+                        ) : (
+                            <>
+                                <Send className="h-4 w-4" />
+                                Become a Donor
+                            </>
                         )}
-                    </form.Subscribe>
+                    </Button>
+
                 </div>
             </form>
         </div>

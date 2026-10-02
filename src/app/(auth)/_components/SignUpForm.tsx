@@ -20,7 +20,7 @@ import { ISignup } from "@/types/signup.type";
 import { useSignup } from "@/hooks";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { email } from "zod";
+
 import { Spinner } from "@/components/ui/spinner";
 import { isAcceptedFileSize, isAcceptedFileTypes, MAX_FILE_SIZE } from "@/validation/profileImage.validation";
 
