@@ -20,6 +20,8 @@ import {
     FieldGroup,
     FieldLabel,
 } from "@/components/ui/field";
+import { useBecomeDonor } from "@/hooks/donor.hook";
+import { useRouter } from "next/navigation";
 
 const bloodGroups = [
     "A+",
@@ -49,6 +51,9 @@ const initialValues: DonorFormData = {
 };
 
 function BecomeDonorForm() {
+    const router = useRouter()
+    const { mutate: BecomeDonor, isPending: submitting } = useBecomeDonor()
+
     const form = useForm({
         defaultValues: initialValues,
 
@@ -63,11 +68,17 @@ function BecomeDonorForm() {
                         value.lastDonationDate || undefined,
                 };
 
-                console.log(donorData)
-
-                toast.success(
-                    "Your donor registration has been submitted successfully!"
-                );
+                BecomeDonor(donorData, {
+                    onSuccess: () => {
+                        toast.success(
+                            "Your donor registration has been submitted successfully!"
+                        );
+                        router.push("/")
+                    },
+                    onError: () => {
+                        toast.warning("Issue in creating new account.Please try again")
+                    }
+                })
 
                 form.reset();
             } catch (error) {
