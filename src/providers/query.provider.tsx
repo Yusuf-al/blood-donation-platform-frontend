@@ -1,5 +1,6 @@
 "use client"
 
+import { AuthProvider } from '@/context/auth.context';
 import { environmentManager, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React, { ReactNode } from 'react'
 

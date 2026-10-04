@@ -7,6 +7,7 @@ import GoogleAuthProvider from "./google.provider";
 function Providers({ children }: { children: ReactNode }) {
     return (
         <GoogleAuthProvider>
+
             <QueryProvider>{children}</QueryProvider>
         </GoogleAuthProvider>
     )

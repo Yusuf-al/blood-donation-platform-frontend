@@ -5,3 +5,28 @@ export interface IDonorFormData {
   address?: string;
   lastDonationDate?: string | null;
 }
+
+export interface Donor {
+  id: string;
+  name: string;
+  profileImage?: string | null;
+  bloodGroup: string;
+  city: string;
+  address?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  lastDonationDate?: string | null;
+  donationCount: number;
+  availabilityStatus: "AVAILABLE" | "UNAVAILABLE";
+}
+
+export interface IDonorQuery {
+  searchTerm?: string;
+  city?: string;
+  bloodGroup?: string;
+  availabilityStatus?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+}
