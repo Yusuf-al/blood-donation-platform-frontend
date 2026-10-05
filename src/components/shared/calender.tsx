@@ -37,9 +37,7 @@ export function DatePicker({
     const [open, setOpen] = React.useState(false);
     const [inputValue, setInputValue] = React.useState("");
 
-    /*
-     * Convert YYYY-MM-DD → Date
-     */
+
     const stringToDate = React.useCallback((dateString: string) => {
         if (!dateString) return undefined;
 
@@ -48,9 +46,7 @@ export function DatePicker({
         return isValid(parsedDate) ? parsedDate : undefined;
     }, []);
 
-    /*
-     * Keep input synchronized with the value
-     */
+
     React.useEffect(() => {
         if (!value) {
             setInputValue("");
@@ -64,36 +60,20 @@ export function DatePicker({
         }
     }, [value, stringToDate]);
 
-    /*
-     * Handle manual typing
-     *
-     * User types:
-     * 20/05/1998
-     *
-     * Value returned:
-     * 1998-05-20
-     */
+
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         const input = event.target.value;
-
         setInputValue(input);
-
         if (input.length !== 10) return;
-
         const parsedDate = parse(input, "dd/MM/yyyy", new Date());
-
         if (!isValid(parsedDate)) return;
-
         const formattedValue = format(parsedDate, "yyyy-MM-dd");
-
         onChange(formattedValue);
     };
 
-    /*
-     * Handle calendar selection
-     */
+
     const handleDateSelect = (date: Date | undefined) => {
         if (!date) {
             onChange("");

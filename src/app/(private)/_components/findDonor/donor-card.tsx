@@ -4,12 +4,14 @@ import {
     Mail,
     MapPin,
     Phone,
+    Send
 } from "lucide-react";
 
 
 
 import { Donor } from "@/types/donor.types";
 import DonorAvatar from "./donor-avatar";
+import Link from "next/link";
 
 interface DonorCardProps {
     donor: any;
@@ -40,9 +42,36 @@ export function formatBloodGroup(value: string) {
     return BLOOD_GROUP_LABELS[value] ?? value;
 }
 
+const AVAILABILITY_STYLES: Record<
+    string,
+    { label: string; badge: string; dot: string }
+> = {
+    AVAILABLE: {
+        label: "Available to donate",
+        badge: "bg-green-50 text-green-700",
+        dot: "bg-green-500",
+    },
+    TEMPORARILY_UNAVAILABLE: {
+        label: "Temporarily unavailable",
+        badge: "bg-yellow-50 text-yellow-700",
+        dot: "bg-yellow-500",
+    },
+    UNAVAILABLE: {
+        label: "Currently unavailable",
+        badge: "bg-red-100 text-slate-500",
+        dot: "bg-red-400",
+    },
+};
+
 
 
 export default function DonorCard({ donor }: DonorCardProps) {
+
+    const status =
+        AVAILABILITY_STYLES[donor.availabilityStatus] ??
+        AVAILABILITY_STYLES.UNAVAILABLE;
+
+    const canRequest = donor.availabilityStatus === "AVAILABLE";
 
     const completedCount = donor.assignments.filter(
         (assignment: any) => assignment.status === "COMPLETED"
@@ -76,17 +105,12 @@ export default function DonorCard({ donor }: DonorCardProps) {
                     </div>
 
                     <div className="mt-3">
-                        {donor.availabilityStatus === "AVAILABLE" ? (
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">
-                                <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-                                Available to Donate
-                            </span>
-                        ) : (
-                            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-500">
-                                <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
-                                Currently Unavailable
-                            </span>
-                        )}
+                        <span
+                            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${status.badge}`}
+                        >
+                            <span className={`h-1.5 w-1.5 rounded-full ${status.dot}`} aria-hidden="true" />
+                            {status.label}
+                        </span>
                     </div>
                 </div>
             </div>
@@ -151,6 +175,28 @@ export default function DonorCard({ donor }: DonorCardProps) {
                         {completedCount} {completedCount === 1 ? "donation" : "donations"}
                     </p>
                 </div>
+            </div>
+
+            {/* Action */}
+            <div className="mt-5">
+                {canRequest ? (
+                    <Link
+                        href={`/blood-requests/new?donorId=${donor.id}`}
+                        className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
+                    >
+                        <Send className="h-4 w-4" aria-hidden="true" />
+                        Request blood
+                    </Link>
+                ) : (
+                    <button
+                        type="button"
+                        disabled
+                        className="flex h-11 w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl bg-slate-100 text-sm font-semibold text-slate-400"
+                    >
+                        <Send className="h-4 w-4" aria-hidden="true" />
+                        Not available for requests
+                    </button>
+                )}
             </div>
         </article>
     );

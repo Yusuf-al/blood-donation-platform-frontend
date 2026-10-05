@@ -30,6 +30,7 @@ function AuthGuard({ children }: { children: ReactNode }) {
 
     // Profile failed / no authenticated user
     if (isError || !user) {
+        router.push('/login')
         return (
             <div className="flex min-h-[50vh] items-center justify-center">
                 <p className="text-sm text-slate-500">

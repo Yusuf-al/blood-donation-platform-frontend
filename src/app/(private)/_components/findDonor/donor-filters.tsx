@@ -104,8 +104,8 @@ export default function DonorFilters() {
                         updateQuery("bloodGroup", value)
                     }
                 >
-                    <SelectTrigger className="h-11">
-                        <SelectValue placeholder="Blood Group" />
+                    <SelectTrigger className={triggerClass} aria-label="Blood Group">
+                        <SelectValue className="p-2" placeholder="Blood Group" />
                     </SelectTrigger>
 
                     <SelectContent>

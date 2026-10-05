@@ -11,9 +11,6 @@ import { useSearchParams } from "next/navigation";
 import { useQueryFilter } from "@/hooks/query.hook";
 
 
-
-
-
 export default function FindDonorsPage() {
     const { getQuery } = useQueryFilter();
 
@@ -31,9 +28,7 @@ export default function FindDonorsPage() {
         city: city || undefined,
         bloodGroup: bloodGroup || undefined,
         availabilityStatus:
-            availabilityStatus || undefined,
-        sortBy: "createdAt",
-        sortOrder: "desc",
+            availabilityStatus || undefined
     })
 
 
