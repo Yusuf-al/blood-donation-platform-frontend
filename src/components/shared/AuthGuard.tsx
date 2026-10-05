@@ -1,25 +1,22 @@
 "use client";
 
-import { useProfile } from "@/hooks";
+import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+
+import { useProfile } from "@/hooks";
 import { Spinner } from "../ui/spinner";
 
 function AuthGuard({ children }: { children: ReactNode }) {
-    const { data, isPending, isError } = useProfile();
     const router = useRouter();
-
+    const { data, isPending, isError } = useProfile();
     const user = data?.data;
 
     useEffect(() => {
-        if (isPending) return;
-
-        if (isError || !user) {
+        if (!isPending && (isError || !user)) {
             router.replace("/login");
         }
     }, [isPending, isError, user, router]);
 
-    // Loading profile
     if (isPending) {
         return (
             <div className="flex min-h-[50vh] items-center justify-center">
@@ -28,14 +25,10 @@ function AuthGuard({ children }: { children: ReactNode }) {
         );
     }
 
-    // Profile failed / no authenticated user
     if (isError || !user) {
-        router.push('/login')
         return (
             <div className="flex min-h-[50vh] items-center justify-center">
-                <p className="text-sm text-slate-500">
-                    Redirecting to login...
-                </p>
+                <p className="text-sm text-slate-500">Redirecting to login...</p>
             </div>
         );
     }

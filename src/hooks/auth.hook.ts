@@ -64,5 +64,6 @@ export function useProfile() {
     queryKey: ["user"],
     queryFn: getMe,
     retry: false,
+    refetchOnWindowFocus: false,
   });
 }

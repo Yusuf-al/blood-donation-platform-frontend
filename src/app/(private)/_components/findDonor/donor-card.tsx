@@ -181,7 +181,7 @@ export default function DonorCard({ donor }: DonorCardProps) {
             <div className="mt-5">
                 {canRequest ? (
                     <Link
-                        href={`/blood-requests/new?donorId=${donor.id}`}
+                        href={`/blood-request?donorId=${donor.id}`}
                         className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
                     >
                         <Send className="h-4 w-4" aria-hidden="true" />
