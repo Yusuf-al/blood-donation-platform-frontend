@@ -38,3 +38,15 @@ export interface IRequestQuery {
   sortBy?: string;
   sortOrder?: "asc" | "desc";
 }
+
+export interface IUsersQuery {
+  searchTerm?: string;
+  role?: string;
+  status?: string;
+  isPremiumUser?: boolean;
+  isVerified?: boolean;
+  page?: number;
+  limit?: number;
+  sortBy?: "name" | "createdAt";
+  sortOrder?: "asc" | "desc";
+}

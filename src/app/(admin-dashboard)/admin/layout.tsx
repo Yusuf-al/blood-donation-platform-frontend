@@ -12,7 +12,6 @@ export default function AdminLayout({
 }: AdminLayoutProps) {
     return <AdminShell>
         <RoleGuard roles={["ADMIN"]}>
-
             {children}
         </RoleGuard>
     </AdminShell>;
