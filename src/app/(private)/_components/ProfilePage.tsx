@@ -12,27 +12,19 @@ import {
     ProfileStats,
     RequestHistory
 } from "./profile";
+import { BloodDonationAssignment, BloodRequest, User } from "@/types/user.types";
 
-
-
-// import {
-//     BloodRequest,
-//     DonationAssignment,
-//     DonationHistory as DonationHistoryType,
-//     DonorInformation as DonorInfo,
-//     UserProfile,
-// } from "@/types/profile";
 
 interface ProfilePageProps {
-    profile: any;
+    profile: User;
 
-    activeRequests: any[];
+    activeRequests: BloodRequest[];
 
-    requestHistory: any[];
+    requestHistory: BloodRequest[];
 
-    donorInformation?: any;
+    donorInformation?: User;
 
-    assignedDonationRequests?: any[];
+    assignedDonationRequests?: BloodDonationAssignment[];
 
     donationHistory?: any[];
 }
@@ -42,15 +34,14 @@ export function ProfilePage({
     activeRequests,
     requestHistory,
     donorInformation,
-    assignedDonationRequests = [],
-    donationHistory = [],
+    assignedDonationRequests,
+    donationHistory,
 }: ProfilePageProps) {
     const router = useRouter();
 
     const handleViewRequest = (requestId: string) => {
         router.push(`/blood-requests/${requestId}`);
     };
-
     return (
         <main className="mx-auto w-full max-w-7xl space-y-6 px-4 py-8">
             <ProfileHeader
@@ -82,7 +73,7 @@ export function ProfilePage({
                 <>
                     <ProfileStats donor={donorInformation} />
 
-                    <DonorInformation donor={donorInformation} />
+                    {/* <DonorInformation donor={donorInformation} /> */}
 
                     {/* A donor can also request blood */}
                     <ActiveBloodRequests

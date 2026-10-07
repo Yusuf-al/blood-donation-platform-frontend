@@ -1,9 +1,14 @@
 "use client";
 
 import {
-    AlertCircle,
-    CalendarClock,
+    Clock,
+    ThumbsUp,
+    Search,
+    UserCheck,
     CheckCircle2,
+    XCircle,
+    LucideIcon,
+    CalendarClock,
     Droplets,
     Hospital,
     UserRound,
@@ -29,7 +34,36 @@ export interface BloodRequest {
         imageUrl?: string | null;
     }
 }
-
+type StatusConfig = {
+    classes: string;
+    icon: LucideIcon;
+};
+const statusConfig: Record<string, StatusConfig> = {
+    PENDING: {
+        classes: "bg-yellow-50 text-yellow-700",
+        icon: Clock,
+    },
+    APPROVED: {
+        classes: "bg-blue-50 text-blue-700",
+        icon: ThumbsUp,
+    },
+    MATCHING: {
+        classes: "bg-purple-50 text-purple-700",
+        icon: Search,
+    },
+    DONOR_ASSIGNED: {
+        classes: "bg-teal-50 text-teal-700",
+        icon: UserCheck,
+    },
+    FULFILLED: {
+        classes: "bg-green-50 text-green-700",
+        icon: CheckCircle2,
+    },
+    CANCELLED: {
+        classes: "bg-red-50 text-red-700",
+        icon: XCircle,
+    },
+};
 interface BloodRequestCardProps {
     request: BloodRequest;
     onViewDetails: (request: BloodRequest) => void;
@@ -87,8 +121,11 @@ export default function BloodRequestCard({
     onAccept,
     isAccepting = false,
 }: BloodRequestCardProps) {
-    const urgency = getUrgencyStyle(request.urgency);
 
+    const urgency = getUrgencyStyle(request.urgency);
+    const currentStatus = request.status!;
+    const config = statusConfig[currentStatus] || statusConfig.PENDING;
+    const IconComponent = config.icon;
 
     return (
         <article
@@ -173,24 +210,29 @@ export default function BloodRequestCard({
             </div>
 
             {/* Eligibility */}
-            <div className="mt-5">
-                <div className="flex items-center gap-2 rounded-xl bg-green-50 px-3 py-2.5 text-xs font-medium text-green-700">
-                    <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
-                    You are eligible to donate for this request.
+            <div className="mt-5 flex justify-between gap-2">
+
+                <div className="mt-5">
+                    <div className="flex items-center gap-2 rounded-xl bg-green-50 px-3 py-2.5 text-xs font-medium text-green-700">
+                        <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
+                        You are eligible to donate for this request.
+                    </div>
                 </div>
-            </div>
-            <div className="mt-5">
-                <div className="flex items-center gap-2 rounded-xl bg-green-50 px-3 py-2.5 text-xs font-medium text-green-700">
-                    <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
-                    {request.status}
+                <div className="mt-5">
+                    <div className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-xs font-medium ${config.classes}`}>
+                        <IconComponent className="h-4 w-4 shrink-0" aria-hidden="true" />
+                        {request.status}
+                    </div>
                 </div>
             </div>
 
             {/* Actions */}
+
             <div className="mt-5 flex gap-2">
                 <Button
                     type="button"
                     variant="outline"
+                    disabled={request.status !== "APPROVED" && request.status !== "DONOR_ASSIGNED"}
                     onClick={() => onViewDetails(request)}
                     className="h-10 flex-1 rounded-xl border-slate-200"
                 >
@@ -199,7 +241,7 @@ export default function BloodRequestCard({
 
                 <Button
                     type="button"
-                    disabled={isAccepting}
+                    disabled={request.status !== "APPROVED" && request.status !== "DONOR_ASSIGNED"}
                     onClick={() => onAccept(request.id)}
                     className="h-10 flex-1 rounded-xl bg-red-600 text-white hover:bg-red-700 disabled:cursor-not-allowed"
                 >

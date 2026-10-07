@@ -41,7 +41,7 @@ function InfoItem({ icon, label, value }: InfoItemProps) {
 export function ProfileInformation({
     profile,
 }: ProfileInformationProps) {
-    console.log(profile)
+
 
     return (
         <section className="rounded-2xl border bg-card p-6">

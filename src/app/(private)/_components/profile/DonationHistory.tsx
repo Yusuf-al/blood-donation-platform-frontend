@@ -1,5 +1,6 @@
 "use client";
 
+import { BloodDonationAssignment } from "@/types/user.types";
 import { previousDay } from "date-fns";
 import { CheckCircle2, Eye } from "lucide-react";
 import { escapeApplescriptStringFragment } from "next/dist/next-devtools/server/launch-editor";
@@ -7,16 +8,16 @@ import { escapeApplescriptStringFragment } from "next/dist/next-devtools/server/
 //import { DonationHistory as DonationHistoryType } from "@/types/profile";
 
 interface DonationHistoryProps {
-    donations: any;
+    donations?: BloodDonationAssignment[];
     onView?: (requestId: string) => void;
 }
 
-enum RequestStatus {
-    CREATED = "CREATED",
+enum AssignmentStatus {
     ACCEPTED = "ACCEPTED",
-    REJECTED = "REJECTED",
     COMPLETED = "COMPLETED",
-    CANCELLED = "CANCELLED"
+    DONOR_ASSIGNED = "DONOR_ASSIGNED",
+    REJECTED = "REJECTED",
+
 }
 
 export function DonationHistory({
@@ -24,13 +25,15 @@ export function DonationHistory({
     onView,
 }: DonationHistoryProps) {
 
-    const previousDonation = donations?.assignments.filter(
-        (assignment: any) =>
-            assignment.status === RequestStatus.REJECTED ||
-            assignment.status === RequestStatus.COMPLETED ||
-            assignment.status === RequestStatus.CANCELLED
 
-    );
+    const previousDonation = donations?.filter(
+        (assignment) =>
+            assignment.status === AssignmentStatus.COMPLETED ||
+            assignment.status === AssignmentStatus.REJECTED
+
+
+    ) || [];
+
     return (
         <section className="rounded-2xl border bg-card p-6">
             <div>
@@ -81,7 +84,7 @@ export function DonationHistory({
                         </thead>
 
                         <tbody>
-                            {previousDonation.map((donation: any) => (
+                            {previousDonation.map((donation) => (
                                 <tr
                                     key={donation.id}
                                     className="border-b last:border-0"

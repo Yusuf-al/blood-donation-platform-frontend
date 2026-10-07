@@ -1,33 +1,34 @@
 "use client";
 
+import { BloodDonationAssignment, User } from "@/types/user.types";
 import {
     CalendarHeart,
     Droplets,
     HeartPulse,
 } from "lucide-react";
 
-//import { DonorInformation } from "@/types/profile";
-
 interface ProfileStatsProps {
-    donor: any;
+    donor: User;
 }
 
 export function ProfileStats({ donor }: ProfileStatsProps) {
-    const donorProfile = donor?.donorProfile
+    const donorProfile = donor?.donorProfile;
+    const donorAssignments = donorProfile.assignments as BloodDonationAssignment[]
+
     const stats = [
         {
             label: "Blood Group",
-            value: donorProfile.bloodGroup,
+            value: donorProfile?.bloodGroup || "N/A",
             icon: Droplets,
         },
         {
             label: "Total Donations",
-            value: donorProfile.totalDonations,
+            value: donorAssignments?.filter((assignment) => assignment.status === 'COMPLETED').length ?? 0,
             icon: HeartPulse,
         },
         {
             label: "Last Donation",
-            value: donorProfile.lastDonationDate
+            value: donorProfile?.lastDonationDate
                 ? new Date(donorProfile.lastDonationDate).toLocaleDateString()
                 : "Never",
             icon: CalendarHeart,

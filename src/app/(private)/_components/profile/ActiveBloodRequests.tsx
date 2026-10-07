@@ -1,8 +1,7 @@
 "use client";
 
+import { BloodRequest } from "@/types/user.types";
 import { Clock, Droplets, HospitalIcon, MapPin } from "lucide-react";
-
-//import { BloodRequest } from "@/types/profile";
 
 enum RequestStatus {
     PENDING = "PENDING",
@@ -14,7 +13,7 @@ enum RequestStatus {
 }
 
 interface ActiveBloodRequestsProps {
-    requests: any;
+    requests?: BloodRequest[];
     onView?: (requestId: string) => void;
 }
 
@@ -26,6 +25,12 @@ function getStatusClass(status: string) {
         case "DONOR_ASSIGNED":
             return "bg-blue-100 text-blue-700";
 
+        case "APPROVED":
+            return "bg-green-100 text-green-700";
+
+        case "MATCHING":
+            return "bg-purple-100 text-purple-700";
+
         default:
             return "bg-muted text-muted-foreground";
     }
@@ -36,16 +41,15 @@ export function ActiveBloodRequests({
     onView,
 }: ActiveBloodRequestsProps) {
 
-    const activeRequests = requests?.requests.filter(
+    const activeRequests = requests?.filter(
         (request: any) =>
             request.status === RequestStatus.PENDING ||
             request.status === RequestStatus.APPROVED ||
             request.status === RequestStatus.DONOR_ASSIGNED ||
             request.status === RequestStatus.MATCHING
-    );
+    ) || [];
 
-
-    if (!activeRequests?.length) {
+    if (!activeRequests.length) {
         return (
             <section className="rounded-2xl border bg-card p-6">
                 <h2 className="text-lg font-semibold">
@@ -73,7 +77,6 @@ export function ActiveBloodRequests({
 
             <div className="mt-6 space-y-4">
                 {activeRequests.map((request: any) => (
-
                     <div
                         key={request.id}
                         className="rounded-xl border p-4"
@@ -104,13 +107,12 @@ export function ActiveBloodRequests({
                                         {request.hospitalLocation}
                                     </span>
 
-                                    {request.hospitalName
-                                        && (
-                                            <span className="flex items-center gap-1">
-                                                <HospitalIcon />
-                                                {request.hospitalName
-                                                }</span>
-                                        )}
+                                    {request.hospitalName && (
+                                        <span className="flex items-center gap-1">
+                                            <HospitalIcon className="h-4 w-4" />
+                                            {request.hospitalName}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
 
@@ -126,7 +128,6 @@ export function ActiveBloodRequests({
                         <div className="mt-4 flex items-center justify-between border-t pt-4">
                             <span className="flex items-center gap-1 text-xs text-muted-foreground">
                                 <Clock className="h-3.5 w-3.5" />
-
                                 {new Date(
                                     request.createdAt
                                 ).toLocaleDateString()}

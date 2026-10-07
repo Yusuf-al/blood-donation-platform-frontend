@@ -1,5 +1,6 @@
 "use client";
 
+import { BloodDonationAssignment } from "@/types/user.types";
 import {
     Clock,
     Droplets,
@@ -7,18 +8,15 @@ import {
     MapPin,
 } from "lucide-react";
 
-enum RequestStatus {
-    CREATED = "CREATED",
+enum AssignmentStatus {
     ACCEPTED = "ACCEPTED",
-    REJECTED = "REJECTED",
     COMPLETED = "COMPLETED",
-    CANCELLED = "CANCELLED"
+    DONOR_ASSIGNED = "DONOR_ASSIGNED",
+    REJECTED = "REJECTED"
 }
 
-//import { DonationAssignment } from "@/types/profile";
-
 interface AssignedDonationRequestsProps {
-    assignments: any;
+    assignments?: BloodDonationAssignment[];
     onView?: (requestId: string) => void;
 }
 
@@ -27,11 +25,11 @@ export function AssignedDonationRequests({
     onView,
 }: AssignedDonationRequestsProps) {
 
-    const assignedDonation = assignments?.assignments.filter(
+    const assignedDonation = assignments?.filter(
         (assignment: any) =>
-            assignment.status === RequestStatus.CREATED ||
-            assignment.status === RequestStatus.ACCEPTED
-    );
+            assignment.status === AssignmentStatus.DONOR_ASSIGNED ||
+            assignment.status === AssignmentStatus.ACCEPTED
+    ) || [];
     return (
         <section className="rounded-2xl border bg-card p-6">
             <div>
@@ -50,7 +48,7 @@ export function AssignedDonationRequests({
                 </div>
             ) : (
                 <div className="mt-6 space-y-4">
-                    {assignedDonation.map((assignment: any) => (
+                    {assignedDonation.map((assignment) => (
                         <div
                             key={assignment.id}
                             className="rounded-xl border p-5"

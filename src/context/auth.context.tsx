@@ -1,16 +1,16 @@
-"use client"
+"use client";
+
+import { createContext, useContext, type ReactNode } from "react";
 
 import { useProfile } from "@/hooks";
-import { createContext, ReactNode, useContext } from "react";
+import { User } from "@/types/user.types";
 
-const AuthContext = createContext(undefined)
+const AuthContext = createContext<User | undefined>(undefined);
 
-export function AuthProvider({
-    children
-}: { children: ReactNode }) {
-    const { data, isPending, isError } = useProfile()
+export function AuthProvider({ children }: { children: ReactNode }) {
+    const { data, isPending, isError } = useProfile();
 
-    const user = data?.data;
+    const user: User | undefined = data?.data;
 
     if (isPending) {
         return (
@@ -28,17 +28,13 @@ export function AuthProvider({
         );
     }
 
-    return <AuthContext.Provider value={user}>
-        {children}
-    </AuthContext.Provider>
+    return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
-    const context = useContext(AuthContext)
+    const context = useContext(AuthContext);
     if (!context) {
-        throw new Error(
-            "useAuth must be used inside AuthGuard"
-        );
+        throw new Error("useAuth must be used inside AuthProvider");
     }
     return context;
 }

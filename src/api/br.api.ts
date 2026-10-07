@@ -16,3 +16,14 @@ export function allBloodRequestApi(query?: IRequestQuery) {
     query,
   });
 }
+
+export function updateRequestStatus(
+  params: { id: string },
+  payload: { assignId: string },
+) {
+  return apiClinet(`/donation/update-assignment/:${params}`, {
+    method: "PATCH",
+    credentials: "include",
+    body: payload,
+  });
+}

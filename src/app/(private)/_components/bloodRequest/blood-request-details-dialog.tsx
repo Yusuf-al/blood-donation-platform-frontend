@@ -176,7 +176,7 @@ export default function BloodRequestDetailsDialog({
 
                 <Button
                     type="button"
-                    disabled={isAccepting}
+                    disabled={isAccepting || (request.status !== "APPROVED" && request.status !== "DONOR_ASSIGNED")}
                     onClick={() => onAccept(request.id)}
                     className="h-11 w-full rounded-xl bg-red-600 text-white hover:bg-red-700 disabled:cursor-not-allowed"
                 >

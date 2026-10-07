@@ -1,11 +1,12 @@
 "use client";
 
 import { CheckCircle2, Eye, XCircle } from "lucide-react";
+import { BloodRequest } from "../bloodRequest/blood-request-card";
 
 //import { BloodRequest } from "@/types/profile";
 
 interface RequestHistoryProps {
-    requests: any;
+    requests?: BloodRequest[];
     onView?: (requestId: string) => void;
 }
 
@@ -38,12 +39,12 @@ export function RequestHistory({
 
 }: RequestHistoryProps) {
 
-    const previousRequests = requests?.requests.filter(
+    const previousRequests = requests?.filter(
         (request: any) =>
             request.status === RequestStatus.CANCELLED ||
             request.status === RequestStatus.FULFILLED
-    );
-    console.log(previousRequests)
+    ) || [];
+
     return (
         <section className="rounded-2xl border bg-card p-6">
             <div>

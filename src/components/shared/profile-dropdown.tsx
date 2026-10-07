@@ -6,6 +6,7 @@ import Link from "next/link";
 import {
     ChevronDown,
     GitPullRequestCreate,
+    IvBagIcon,
     LayoutDashboard,
     LogOut,
     Settings,
@@ -137,16 +138,26 @@ function ProfileDropdown({
                         </Link>
                     }
                     {user.role === 'DONOR' &&
-
-                        <Link
-                            href="/all-requests"
-                            onClick={closeDropdown}
-                            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-red-50 hover:text-red-600"
-                            role="menuitem"
-                        >
-                            <GitPullRequestCreate className="h-4 w-4" />
-                            All Blood Requests
-                        </Link>
+                        <>
+                            <Link
+                                href="/all-requests"
+                                onClick={closeDropdown}
+                                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-red-50 hover:text-red-600"
+                                role="menuitem"
+                            >
+                                <GitPullRequestCreate className="h-4 w-4" />
+                                All Blood Requests
+                            </Link>
+                            <Link
+                                href="/my-donations"
+                                onClick={closeDropdown}
+                                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-red-50 hover:text-red-600"
+                                role="menuitem"
+                            >
+                                <IvBagIcon className="h-4 w-4" />
+                                My Donations
+                            </Link>
+                        </>
                     }
 
                     {/* Profile */}
