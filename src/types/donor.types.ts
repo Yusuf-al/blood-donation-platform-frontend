@@ -30,3 +30,11 @@ export interface IDonorQuery {
   sortBy?: string;
   sortOrder?: "asc" | "desc";
 }
+
+export interface IRequestQuery {
+  urgency?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+}

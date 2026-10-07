@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {
     ChevronDown,
+    GitPullRequestCreate,
+    LayoutDashboard,
     LogOut,
     Settings,
     User,
@@ -15,7 +17,10 @@ import { useEffect, useRef, useState } from "react";
 type UserData = {
     name: string;
     email: string;
-    imageUrl?: string | null;
+    imageUrl: string | null;
+    role: string;
+    isPremiumUser: boolean;
+    isVerified: boolean;
 };
 
 type ProfileDropdownProps = {
@@ -119,6 +124,30 @@ function ProfileDropdown({
                     </div>
 
                     <div className="my-2 h-px bg-slate-100" />
+                    {user.role === 'ADMIN' &&
+
+                        <Link
+                            href="/admin-dashboard"
+                            onClick={closeDropdown}
+                            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-red-50 hover:text-red-600"
+                            role="menuitem"
+                        >
+                            <LayoutDashboard className="h-4 w-4" />
+                            Dashboard
+                        </Link>
+                    }
+                    {user.role === 'DONOR' &&
+
+                        <Link
+                            href="/all-requests"
+                            onClick={closeDropdown}
+                            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-red-50 hover:text-red-600"
+                            role="menuitem"
+                        >
+                            <GitPullRequestCreate className="h-4 w-4" />
+                            All Blood Requests
+                        </Link>
+                    }
 
                     {/* Profile */}
                     <Link

@@ -39,11 +39,6 @@ const navItems = [
     },
 ];
 
-type UserData = {
-    name: string;
-    email: string;
-    imageUrl: string | null;
-};
 
 function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -56,6 +51,9 @@ function Navbar() {
         ? {
             name: data?.data?.name,
             email: data?.data?.email,
+            role: data?.data?.role,
+            isPremiumUser: data?.data?.isPremiumUser,
+            isVerified: data?.data?.isVerified,
             imageUrl: data?.data?.imageUrl ?? null,
         }
         : null;
