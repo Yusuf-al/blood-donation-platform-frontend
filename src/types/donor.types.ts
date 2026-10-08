@@ -25,6 +25,7 @@ export interface IDonorQuery {
   city?: string;
   bloodGroup?: string;
   availabilityStatus?: string;
+  eligibilityVerified?: boolean;
   page?: number;
   limit?: number;
   sortBy?: string;
@@ -49,4 +50,25 @@ export interface IUsersQuery {
   limit?: number;
   sortBy?: "name" | "createdAt";
   sortOrder?: "asc" | "desc";
+}
+
+export interface IUser {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  imageUrl: string;
+}
+
+export interface IDonorProfile {
+  id: string;
+  bloodGroup: string;
+  dateOfBirth: string;
+  city: string;
+  address: string;
+  lastDonationDate: string | null;
+  availabilityStatus: string;
+  eligibilityVerified: boolean;
+  user: IUser;
+  assignments: unknown[];
 }

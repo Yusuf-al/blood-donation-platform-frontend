@@ -8,27 +8,28 @@ import {
 import { Button } from "@/components/ui/button";
 import { useQueryFilter } from "@/hooks/query.hook";
 
-interface UsersPaginationProps {
+interface DonorsPaginationProps {
     currentPage: number;
     totalPages: number;
 }
 
-export default function UsersPagination({
+export default function DonorsPagination({
     currentPage,
     totalPages,
-}: UsersPaginationProps) {
+}: DonorsPaginationProps) {
     const { updateQuery } = useQueryFilter();
+
+    if (totalPages <= 1) {
+        return null;
+    }
 
     const goToPage = (page: number) => {
         if (page < 1 || page > totalPages) {
             return;
         }
+
         updateQuery("page", String(page));
     };
-
-    if (totalPages <= 1) {
-        return null;
-    }
 
     return (
         <div className="flex items-center justify-between border-t border-slate-200 pt-4">
@@ -49,7 +50,9 @@ export default function UsersPagination({
                     variant="outline"
                     size="icon"
                     disabled={currentPage === 1}
-                    onClick={() => goToPage(currentPage - 1)}
+                    onClick={() =>
+                        goToPage(currentPage - 1)
+                    }
                 >
                     <ChevronLeft className="h-4 w-4" />
                 </Button>
@@ -59,7 +62,9 @@ export default function UsersPagination({
                     variant="outline"
                     size="icon"
                     disabled={currentPage === totalPages}
-                    onClick={() => goToPage(currentPage + 1)}
+                    onClick={() =>
+                        goToPage(currentPage + 1)
+                    }
                 >
                     <ChevronRight className="h-4 w-4" />
                 </Button>
