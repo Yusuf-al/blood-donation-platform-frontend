@@ -37,6 +37,8 @@ export default function BloodRequestsPage() {
     // Adjust this path if your API wraps the list differently
     const requests: BloodRequest[] = allRequest?.data?.data ?? [];
 
+
+
     console.log(requests)
 
     const handleViewDetails = (request: BloodRequest) => {

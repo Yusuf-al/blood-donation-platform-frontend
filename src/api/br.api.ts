@@ -1,5 +1,6 @@
 import apiClinet from "@/lib/apiClient";
 import { IRequestQuery } from "@/types/donor.types";
+import { BloodRequestStatus } from "@/types/dr.types";
 import { IBloodRequest } from "@/types/newRequest.types";
 
 export function newBloodRequestApi(payload: IBloodRequest) {
@@ -22,6 +23,17 @@ export function updateRequestStatus(
   payload: { assignId: string },
 ) {
   return apiClinet(`/donation/update-assignment/:${params}`, {
+    method: "PATCH",
+    credentials: "include",
+    body: payload,
+  });
+}
+
+export function BloodRequestStatusUpdateApi(
+  requestId: string,
+  payload: { status: BloodRequestStatus },
+) {
+  return apiClinet(`/blood/update-request/${requestId}`, {
     method: "PATCH",
     credentials: "include",
     body: payload,

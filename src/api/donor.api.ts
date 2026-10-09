@@ -9,9 +9,9 @@ export function becomeDonorApi(payload: IDonorFormData) {
   });
 }
 
-export function getAllDonorApi(query?: IDonorQuery) {
+export function getAllDonorApi(query?: IDonorQuery | null) {
   return apiClinet("/donor/find-donor", {
     credentials: "include",
-    query,
+    query: query ?? undefined,
   });
 }

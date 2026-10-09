@@ -34,6 +34,8 @@ export interface IDonorQuery {
 
 export interface IRequestQuery {
   urgency?: string;
+  bloodGroup?: string;
+  status?: string;
   page?: number;
   limit?: number;
   sortBy?: string;

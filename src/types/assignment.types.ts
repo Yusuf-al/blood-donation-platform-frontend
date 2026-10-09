@@ -1,3 +1,6 @@
+import { IUser } from "./donor.types";
+import { IBloodRequest } from "./newRequest.types";
+
 export interface Requester {
   id: string;
   name: string;
@@ -33,4 +36,21 @@ export interface BloodDonationAssignment {
   respondedAt: string; // ISO 8601 date string
   donorProfileId: string;
   request: RequestDetails;
+}
+
+export interface IAssignmentDonorProfile {
+  bloodGroup: string;
+  availabilityStatus: string;
+}
+export interface IAssignemnts {
+  id: string;
+  requestId: string;
+  donorId: string;
+  donorProfileId: string;
+  status: string;
+  assignedAt: string;
+  respondedAt: string;
+  request: RequestDetails;
+  donor: IUser;
+  donorProfile: IAssignmentDonorProfile;
 }

@@ -15,7 +15,7 @@ import {
 
 import { useQueryFilter } from "@/hooks/query.hook";
 
-const bloodGroups = [
+export const bloodGroups = [
     { label: "A+", value: "A_POSITIVE" },
     { label: "A-", value: "A_NEGATIVE" },
     { label: "B+", value: "B_POSITIVE" },

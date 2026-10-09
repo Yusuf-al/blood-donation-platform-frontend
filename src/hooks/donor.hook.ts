@@ -8,7 +8,7 @@ export function useBecomeDonor() {
   });
 }
 
-export function useDonors(query: IDonorQuery) {
+export function useDonors(query: IDonorQuery | null) {
   return useQuery({
     queryKey: ["all-donors", query],
     queryFn: () => getAllDonorApi(query),
