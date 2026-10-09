@@ -16,3 +16,9 @@ export function AllAssignmentsApi() {
     credentials: "include",
   });
 }
+
+export function donationRecordApi() {
+  return apiClinet("/donation/records", {
+    credentials: "include",
+  });
+}

@@ -1,6 +1,7 @@
 import { UserStatus } from "@/app/(admin-dashboard)/admin/dashboard/users/page";
 import apiClinet from "@/lib/apiClient";
 import { IUsersQuery } from "@/types/donor.types";
+import { IPaymentsQuery } from "@/types/payments.types";
 
 export function adminUsersApi(query: IUsersQuery) {
   return apiClinet("/admin/users", {
@@ -41,5 +42,25 @@ export function donorAvailabilityUpdateApi(
     method: "PUT",
     credentials: "include",
     body: payload,
+  });
+}
+
+export function subscriptionsApi(query: {
+  status?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: "name" | "createdAt";
+  sortOrder?: "asc" | "desc";
+}) {
+  return apiClinet("/admin/subscriptions", {
+    query: query,
+    credentials: "include",
+  });
+}
+
+export function paymentsApi(query?: IPaymentsQuery | null) {
+  return apiClinet("/admin/payments", {
+    query: query ?? undefined,
+    credentials: "include",
   });
 }

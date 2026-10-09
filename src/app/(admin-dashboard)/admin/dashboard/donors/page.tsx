@@ -7,10 +7,10 @@ import { useQueryFilter } from "@/hooks/query.hook";
 import DonorsHeader from "../_components/donors/donors-header";
 import DonorsFilter from "../_components/donors/donors-filter";
 import DonorsList from "../_components/donors/donors-list";
-import DonorsPagination from "../_components/donors/donors-pagination";
 import { IDonorProfile } from "@/types/donor.types";
 import { donorAvailabilityUpdateApi, donorProfileVerifyApi } from "@/api/admin.api";
 import { toast } from "sonner";
+import Pagination from "@/components/shared/pagination";
 
 export default function DonorsPage() {
     const router = useRouter();
@@ -177,7 +177,7 @@ export default function DonorsPage() {
                     />
 
                     {/* Pagination */}
-                    <DonorsPagination
+                    <Pagination
                         currentPage={page}
                         totalPages={totalPages}
                     />

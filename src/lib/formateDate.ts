@@ -1,15 +1,13 @@
-export function formatDate(date?: string | null) {
-  if (!date) return "—";
+export function formatDate(value: string | null | undefined) {
+  if (!value) return "—";
 
-  const parsedDate = new Date(date);
+  const date = new Date(value);
 
-  if (Number.isNaN(parsedDate.getTime())) {
-    return "—";
-  }
+  if (Number.isNaN(date.getTime())) return "—";
 
-  return parsedDate.toLocaleDateString("en-GB", {
+  return new Intl.DateTimeFormat("en-BD", {
     day: "2-digit",
     month: "short",
     year: "numeric",
-  });
+  }).format(date);
 }

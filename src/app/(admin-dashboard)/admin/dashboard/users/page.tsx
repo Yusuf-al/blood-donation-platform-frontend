@@ -14,6 +14,7 @@ import UsersList from "../_components/users/users-list";
 import UsersPagination from "../_components/users/users-pagination";
 import { adminUserDeletesApi, adminUserUpdateApi } from "@/api/admin.api";
 import { toast } from "sonner";
+import Pagination from "@/components/shared/pagination";
 
 export type UserStatus = "ACTIVE" | "BLOCKED" | "SUSPENDED";
 
@@ -216,7 +217,7 @@ export default function UsersPage() {
                             onDelete={handleDelete}
                         />
 
-                        <UsersPagination
+                        <Pagination
                             currentPage={page}
                             totalPages={totalPages}
                         />

@@ -54,3 +54,28 @@ export interface IAssignemnts {
   donor: IUser;
   donorProfile: IAssignmentDonorProfile;
 }
+
+export interface IDonationAssignment {
+  id: string;
+  assignedAt: string;
+  respondedAt: string | null;
+  request: {
+    bloodGroup: string;
+    createdAt: string;
+    requester: {
+      name: string;
+      imageUrl: string;
+    };
+  };
+  donor: {
+    name: string;
+    imageUrl: string;
+  };
+}
+
+export interface IDonationHistory {
+  donatedAt: string;
+  status: string;
+  notes: string | null;
+  assignment: IDonationAssignment;
+}

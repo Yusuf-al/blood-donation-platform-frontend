@@ -11,11 +11,11 @@ import { IDonorProfile } from "@/types/donor.types";
 import BloodRequestsHeader from "../_components/requests/blood-requests-header";
 import BloodRequestsFilter from "../_components/requests/blood-requests-filter";
 import BloodRequestsList from "../_components/requests/blood-requests-list";
-import BloodRequestsPagination from "../_components/requests/blood-requests-pagination";
 import BloodRequestDetailsDialog from "../_components/requests/blood-request-details-dialog";
 import { useDonors } from "@/hooks/donor.hook";
 import { newAssignmentApi } from "@/api/assign.api";
 import { BloodRequestStatusUpdateApi } from "@/api/br.api";
+import Pagination from "@/components/shared/pagination";
 
 
 export default function RequestsPage() {
@@ -237,7 +237,7 @@ export default function RequestsPage() {
                     />
 
                     {/* Pagination */}
-                    <BloodRequestsPagination
+                    <Pagination
                         currentPage={page}
                         totalPages={totalPages}
                     />
