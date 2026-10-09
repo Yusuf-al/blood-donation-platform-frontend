@@ -23,7 +23,7 @@ export interface BloodDonationAssignment {
   id: string;
   requestId: string;
   donorId: string;
-  status: "ACCEPTED" | "COMPLETED" | "DONOR_ASSIGNED" | "REJECTED";
+  status: "ACCEPTED" | "COMPLETED" | "CREATED" | "REJECTED";
   assignedAt: string; // ISO 8601 date string
   respondedAt: string; // ISO 8601 date string
   donorProfileId: string;

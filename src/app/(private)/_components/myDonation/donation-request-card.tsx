@@ -145,7 +145,12 @@ export default function DonationRequestCard({
     isCompleting = false,
 }: DonationRequestCardProps) {
 
-    const status = STATUS_STYLES[request.status];
+    const status =
+        STATUS_STYLES[request.status as DonationAssignmentStatus] ?? {
+            label: request.status?.replaceAll("_", " ") ?? "Unknown",
+            className: "bg-slate-100 text-slate-600",
+            icon: Clock3,
+        };
     const StatusIcon = status.icon;
     const urgency = URGENCY_STYLES[request?.request?.urgency] ?? URGENCY_STYLES.NORMAL;
     const statusTime = getStatusTime(request);
@@ -235,7 +240,7 @@ export default function DonationRequestCard({
                     View details
                 </Button>
 
-                {request.status === "DONOR_ASSIGNED" && (
+                {request.status === "CREATED" && (
                     <>
                         <Button
                             type="button"

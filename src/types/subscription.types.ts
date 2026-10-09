@@ -1,9 +1,4 @@
-export interface ISubscriptionUser {
-  name: string;
-  email: string;
-  phone: string | null;
-  imageUrl: string | null;
-}
+import { IUser } from "./donor.types";
 
 export interface ISubscriptionPayment {
   paidAt: string | null;
@@ -16,6 +11,6 @@ export interface ISubscription {
   startedAt: string;
   expiresAt: string;
   status: string;
-  user: ISubscriptionUser;
+  user: IUser;
   payments: ISubscriptionPayment;
 }

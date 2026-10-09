@@ -11,10 +11,10 @@ export function newBloodRequestApi(payload: IBloodRequest) {
   });
 }
 
-export function allBloodRequestApi(query?: IRequestQuery) {
+export function allBloodRequestApi(query?: IRequestQuery | null) {
   return apiClinet("/blood/all", {
     credentials: "include",
-    query,
+    query: query ?? undefined,
   });
 }
 

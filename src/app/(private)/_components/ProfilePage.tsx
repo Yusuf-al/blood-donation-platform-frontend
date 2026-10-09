@@ -13,12 +13,13 @@ import {
     RequestHistory
 } from "./profile";
 import { BloodDonationAssignment, BloodRequest, User } from "@/types/user.types";
+import { IBloodRequest } from "@/types/dr.types";
 
 
 interface ProfilePageProps {
     profile: User;
 
-    activeRequests: BloodRequest[];
+    activeRequests: IBloodRequest[];
 
     requestHistory: BloodRequest[];
 

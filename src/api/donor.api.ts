@@ -15,3 +15,19 @@ export function getAllDonorApi(query?: IDonorQuery | null) {
     query: query ?? undefined,
   });
 }
+
+export function getAllDonorAssignmentsApi() {
+  return apiClinet("donation/donor/assignments", {
+    credentials: "include",
+  });
+}
+export function updateAssignmentsApi(
+  userId: string,
+  payload: { status: string },
+) {
+  return apiClinet(`donation/update-assignment/${userId}`, {
+    method: "PATCH",
+    credentials: "include",
+    body: payload,
+  });
+}

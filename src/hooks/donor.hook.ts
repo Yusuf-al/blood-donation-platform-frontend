@@ -1,4 +1,8 @@
-import { becomeDonorApi, getAllDonorApi } from "@/api/donor.api";
+import {
+  becomeDonorApi,
+  getAllDonorApi,
+  getAllDonorAssignmentsApi,
+} from "@/api/donor.api";
 import { IDonorQuery } from "@/types/donor.types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -13,5 +17,13 @@ export function useDonors(query: IDonorQuery | null) {
     queryKey: ["all-donors", query],
     queryFn: () => getAllDonorApi(query),
     placeholderData: (previousData) => previousData,
+  });
+}
+
+export function useDonorAssignments() {
+  return useQuery({
+    queryKey: ["donor-assignments"],
+    queryFn: getAllDonorAssignmentsApi,
+    retry: false,
   });
 }

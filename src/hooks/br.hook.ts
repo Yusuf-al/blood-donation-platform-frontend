@@ -8,7 +8,7 @@ export function useBloodRequest() {
   });
 }
 
-export function useGetBloodRequest(query: IRequestQuery) {
+export function useGetBloodRequest(query: IRequestQuery | null) {
   return useQuery({
     queryKey: ["blood-requests", query],
     queryFn: () => allBloodRequestApi(query),

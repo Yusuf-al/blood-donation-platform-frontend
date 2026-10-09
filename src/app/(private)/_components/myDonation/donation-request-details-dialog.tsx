@@ -121,7 +121,14 @@ export default function DonationRequestDetailsDialog({
 }: DonationRequestDetailsDialogProps) {
     if (!assignment) return null;
 
-    const status = STATUS_STYLES[assignment.status];
+    const status =
+        STATUS_STYLES[assignment.status as DonationAssignmentStatus] ?? {
+            label: assignment.status
+                ? assignment.status.replaceAll("_", " ")
+                : "Unknown",
+            className: "bg-slate-100 text-slate-600",
+            icon: Clock3,
+        };
     const StatusIcon = status.icon;
     const request = assignment.request
 

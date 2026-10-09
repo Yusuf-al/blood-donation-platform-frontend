@@ -1,13 +1,6 @@
 import { IUser } from "./donor.types";
 import { IBloodRequest } from "./newRequest.types";
 
-export interface Requester {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-}
-
 export interface RequestDetails {
   id: string;
   requesterId: string;
@@ -24,14 +17,14 @@ export interface RequestDetails {
   fulfilledAt: string; // ISO 8601 date string
   deletedAt: string | null;
   isFeatured: boolean;
-  requester: Requester;
+  requester: IUser;
 }
 
 export interface BloodDonationAssignment {
   id: string;
   requestId: string;
   donorId: string;
-  status: "DONOR_ASSIGNED" | "ACCEPTED" | "REJECTED" | "COMPLETED";
+  status: "CREATED" | "ACCEPTED" | "REJECTED" | "COMPLETED";
   assignedAt: string; // ISO 8601 date string
   respondedAt: string; // ISO 8601 date string
   donorProfileId: string;

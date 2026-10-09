@@ -4,17 +4,26 @@ import { useAuth } from '@/context/auth.context';
 import React from 'react'
 import { ProfilePage } from '../_components/ProfilePage';
 import { User } from '@/types/user.types';
+import { useDonorAssignments } from '@/hooks/donor.hook';
+import { useBloodRequest, useGetBloodRequest } from '@/hooks/br.hook';
 
 function MyProfile() {
     const user: User = useAuth()
+
+    const { data: assignments } = useDonorAssignments()
+    const { data: bloodRequest } = useGetBloodRequest(null)
+
+    const allBloodRequests = bloodRequest?.data?.data ?? []
+
+
     return (
         <AuthGuard>
             <ProfilePage
                 profile={user}
-                activeRequests={user.requests}
+                activeRequests={allBloodRequests}
                 requestHistory={user.requests}
                 donorInformation={user}
-                assignedDonationRequests={user.assignments}
+                assignedDonationRequests={assignments?.data ?? []}
                 donationHistory={user.assignments}
             />
         </AuthGuard>

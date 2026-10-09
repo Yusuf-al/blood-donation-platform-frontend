@@ -1,3 +1,5 @@
+import { IUser } from "./donor.types";
+
 export interface IRequester {
   id: string;
   name: string;
@@ -22,7 +24,7 @@ export interface IBloodRequest {
   fulfilledAt: string | null;
   isFeatured: boolean;
   requester: IRequester;
-  assignments: unknown[];
+  assignments: BloodDonationAssignment[];
 }
 
 export type BloodRequestStatus =
@@ -32,3 +34,41 @@ export type BloodRequestStatus =
   | "DONOR_ASSIGNED"
   | "FULFILLED"
   | "CANCELLED";
+
+// export interface BloodRequest {
+//   id: string;
+//   bloodGroup: string;
+//   contactPhone: string;
+//   hospitalLocation: string;
+//   hospitalName: string;
+//   createdAt: Date;
+//   urgency: string;
+//   status: string;
+//   requiredUnits: number;
+//   description: string | null;
+
+//   requester: {
+//     id: string;
+//     name: string;
+//     email: string;
+//     phone: string | null;
+//     imageUrl: string | null;
+//   };
+
+//   assignments: BloodDonationAssignment[];
+// }
+
+export interface BloodDonationAssignment {
+  id: string;
+  status: string;
+  assignedAt: Date;
+  respondedAt: Date | null;
+
+  donorProfile: {
+    bloodGroup: string;
+    city: string;
+    address: string | null;
+  };
+
+  donor: IUser;
+}
