@@ -15,7 +15,8 @@ import { useQueryClient } from "@tanstack/react-query"
 
 import ProfileDropdown from "./profile-dropdown";
 import { useLogout, useProfile } from "@/hooks";
-
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 const navItems = [
     {
         label: "Find Blood",
@@ -44,6 +45,7 @@ function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const { data, isLoading } = useProfile();
     const { mutate: logout } = useLogout();
+    const router = useRouter()
 
     const queryClient = useQueryClient()
 
@@ -62,9 +64,18 @@ function Navbar() {
     const handleLogout = () => {
         logout(undefined, {
             onSuccess: () => {
+                // Remove client-accessible cookies
+                Cookies.remove("accessToken", { path: "/" });
+                Cookies.remove("refreshToken", { path: "/" });
+
+                // Clear cached user data
+                queryClient.removeQueries({ queryKey: ["user"] });
+
                 toast.success("Logout successful!");
                 setMobileOpen(false);
-                queryClient.removeQueries({ queryKey: ["user"] })
+
+                // Redirect to login
+                router.replace("/login");
             },
             onError: () => {
                 toast.error("Logout failed. Please try again.");

@@ -11,7 +11,7 @@ import { Donor } from "@/types/donor.types";
 import DonorAvatar from "./donor-avatar";
 import Link from "next/link";
 import { useAuth } from "@/context/auth.context";
-import { User } from "@/types/user.types";
+
 
 interface DonorCardProps {
     donor: any;
@@ -67,9 +67,9 @@ const AVAILABILITY_STYLES: Record<
 
 export default function DonorCard({ donor }: DonorCardProps) {
 
-    const userData = useAuth()
+    const {user:userData ,isPending} = useAuth()
 
-    const isPremiumUser = userData.isPremiumUser;
+    const isPremiumUser = userData!.isPremiumUser;
 
     const privateInfoClass = isPremiumUser
         ? ""

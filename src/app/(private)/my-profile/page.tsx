@@ -8,7 +8,7 @@ import { useDonorAssignments } from '@/hooks/donor.hook';
 import { useBloodRequest, useGetBloodRequest } from '@/hooks/br.hook';
 
 function MyProfile() {
-    const user: User = useAuth()
+    const user = useAuth()
 
     const { data: assignments } = useDonorAssignments()
     const { data: bloodRequest } = useGetBloodRequest(null)
@@ -19,7 +19,7 @@ function MyProfile() {
     return (
         <AuthGuard>
             <ProfilePage
-                profile={user}
+                profile={user!}
                 activeRequests={allBloodRequests}
                 requestHistory={allBloodRequests}
                 donorInformation={user}

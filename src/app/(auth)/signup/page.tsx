@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Eye,
   EyeOff,
@@ -22,8 +22,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import SignupForm from "../_components/SignUpForm";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth.context";
 
 export default function SignupPage() {
+  const router = useRouter();
+  const { user, isPending } = useAuth();
+
+  useEffect(() => {
+    if (!isPending && user) {
+      router.replace("/");
+    }
+  }, [user, isPending, router]);
+
+  if (isPending || user) {
+    return null; // or a spinner
+  }
 
   return (
     <main className="min-h-screen bg-background">

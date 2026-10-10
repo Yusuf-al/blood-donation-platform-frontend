@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { HeartPulse } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,8 +17,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import LoginForm from "../_components/LoginForm";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth.context";
 
 export default function LoginPage() {
+
+    const router = useRouter();
+    const { user, isPending } = useAuth();
+
+    useEffect(() => {
+        if (!isPending && user) {
+            router.replace("/");
+        }
+    }, [user, isPending, router]);
+
+    if (isPending || user) {
+        return null; // or a spinner
+    }
 
     return (
         <main className="min-h-screen bg-background">

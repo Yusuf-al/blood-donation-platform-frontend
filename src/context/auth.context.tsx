@@ -1,40 +1,46 @@
 "use client";
 
-import { createContext, useContext, type ReactNode } from "react";
+import {
+    createContext,
+    useContext,
+    type ReactNode,
+} from "react";
 
 import { useProfile } from "@/hooks";
 import { User } from "@/types/user.types";
 
-const AuthContext = createContext<User | undefined>(undefined);
+interface AuthContextType {
+    user: User | undefined;
+    isPending: boolean;
+    isError: boolean;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const { data, isPending, isError } = useProfile();
 
+
     const user: User | undefined = data?.data;
 
-    if (isPending) {
-        return (
-            <div className="flex min-h-[50vh] items-center justify-center">
-                Loading...
-            </div>
-        );
-    }
+    return (
+        <AuthContext.Provider value={{ user, isPending, isError }}>
+            {children}
+        </AuthContext.Provider>
+    );
 
-    if (isError || !user) {
-        return (
-            <div className="flex min-h-[50vh] items-center justify-center">
-                Redirecting to login...
-            </div>
-        );
-    }
 
-    return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
     const context = useContext(AuthContext);
+
+
     if (!context) {
         throw new Error("useAuth must be used inside AuthProvider");
     }
+
     return context;
+
+
 }

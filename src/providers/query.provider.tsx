@@ -32,9 +32,11 @@ function QueryProvider({ children }: { children: ReactNode }) {
     const queryClinet = getQueryClinet()
 
     return (
-        <QueryClientProvider client={queryClinet}>
-            {children}
-        </QueryClientProvider>
+       
+            <QueryClientProvider client={queryClinet}>
+                {children}
+            </QueryClientProvider>
+        
     )
 }
 

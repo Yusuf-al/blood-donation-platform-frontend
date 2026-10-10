@@ -32,17 +32,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable, geistHeading.variable)}
     >
       <Providers>
-
         <body className="flex min-h-screen flex-col bg-background">
           <main className="flex-1">
-
             {children}
             <Toaster />
           </main>
           <Footer />
-
         </body>
       </Providers>
+
     </html>
   );
 }

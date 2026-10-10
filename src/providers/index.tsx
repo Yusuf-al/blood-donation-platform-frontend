@@ -1,16 +1,18 @@
-"use client"
+"use client";
+
 import { ReactNode } from "react";
 import QueryProvider from "./query.provider";
 import GoogleAuthProvider from "./google.provider";
-
+import { AuthProvider } from "@/context/auth.context"; // adjust to your export name
 
 function Providers({ children }: { children: ReactNode }) {
     return (
         <GoogleAuthProvider>
-
-            <QueryProvider>{children}</QueryProvider>
+            <QueryProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </QueryProvider>
         </GoogleAuthProvider>
-    )
+    );
 }
 
-export default Providers
+export default Providers;
