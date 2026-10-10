@@ -21,7 +21,7 @@ interface ProfilePageProps {
 
     activeRequests: IBloodRequest[];
 
-    requestHistory: BloodRequest[];
+    requestHistory: IBloodRequest[];
 
     donorInformation?: User;
 
@@ -39,6 +39,7 @@ export function ProfilePage({
     donationHistory,
 }: ProfilePageProps) {
     const router = useRouter();
+    console.log(donorInformation)
 
     const handleViewRequest = (requestId: string) => {
         router.push(`/blood-requests/${requestId}`);

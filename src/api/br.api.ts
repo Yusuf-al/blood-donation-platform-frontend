@@ -22,7 +22,7 @@ export function updateRequestStatus(
   params: { id: string },
   payload: { assignId: string },
 ) {
-  return apiClinet(`/donation/update-assignment/:${params}`, {
+  return apiClinet(`/donation/update-assignment/${params}`, {
     method: "PATCH",
     credentials: "include",
     body: payload,

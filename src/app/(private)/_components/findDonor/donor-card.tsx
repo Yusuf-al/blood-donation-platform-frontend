@@ -7,11 +7,11 @@ import {
     Send
 } from "lucide-react";
 
-
-
 import { Donor } from "@/types/donor.types";
 import DonorAvatar from "./donor-avatar";
 import Link from "next/link";
+import { useAuth } from "@/context/auth.context";
+import { User } from "@/types/user.types";
 
 interface DonorCardProps {
     donor: any;
@@ -67,6 +67,14 @@ const AVAILABILITY_STYLES: Record<
 
 export default function DonorCard({ donor }: DonorCardProps) {
 
+    const userData = useAuth()
+
+    const isPremiumUser = userData.isPremiumUser;
+
+    const privateInfoClass = isPremiumUser
+        ? ""
+        : "blur-sm select-none pointer-events-none";
+
     const status =
         AVAILABILITY_STYLES[donor.availabilityStatus] ??
         AVAILABILITY_STYLES.UNAVAILABLE;
@@ -121,9 +129,16 @@ export default function DonorCard({ donor }: DonorCardProps) {
                     <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
                     <div>
                         <p className="text-xs text-slate-400">Address</p>
-                        <p className="mt-0.5 text-slate-700">
+                        <p
+                            className={`mt-0.5 text-slate-700 ${privateInfoClass}`}
+                        >
                             {donor.address || "Not available"}
                         </p>
+                        {!isPremiumUser && (
+                            <p className="mt-1 text-xs text-red-600">
+                                Premium required to view address
+                            </p>
+                        )}
                     </div>
                 </div>
 
@@ -131,7 +146,7 @@ export default function DonorCard({ donor }: DonorCardProps) {
                     <Phone className="h-4 w-4 shrink-0 text-slate-400" />
                     <div>
                         <p className="text-xs text-slate-400">Phone</p>
-                        <p className="text-slate-700">
+                        <p className={`text-slate-700 ${privateInfoClass}`}>
                             {donor.user.phone || "Not available"}
                         </p>
                     </div>
@@ -141,7 +156,7 @@ export default function DonorCard({ donor }: DonorCardProps) {
                     <Mail className="h-4 w-4 shrink-0 text-slate-400" />
                     <div className="min-w-0">
                         <p className="text-xs text-slate-400">Email</p>
-                        <p className="truncate text-slate-700">
+                        <p className={`truncate text-slate-700 ${privateInfoClass}`}>
                             {donor.user.email || "Not available"}
                         </p>
                     </div>

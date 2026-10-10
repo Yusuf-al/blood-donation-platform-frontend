@@ -1,5 +1,6 @@
 "use client";
 
+import { IAssignemnts } from "@/types/assignment.types";
 import { BloodDonationAssignment } from "@/types/user.types";
 import { previousDay } from "date-fns";
 import { CheckCircle2, Eye } from "lucide-react";
@@ -8,7 +9,7 @@ import { escapeApplescriptStringFragment } from "next/dist/next-devtools/server/
 //import { DonationHistory as DonationHistoryType } from "@/types/profile";
 
 interface DonationHistoryProps {
-    donations?: BloodDonationAssignment[];
+    donations?: IAssignemnts[];
     onView?: (requestId: string) => void;
 }
 
@@ -21,11 +22,11 @@ enum AssignmentStatus {
 }
 
 export function DonationHistory({
-    donations,
+    donations = [],
     onView,
 }: DonationHistoryProps) {
 
-
+    console.log(donations)
     const previousDonation = donations?.filter(
         (assignment) =>
             assignment.status === AssignmentStatus.COMPLETED ||

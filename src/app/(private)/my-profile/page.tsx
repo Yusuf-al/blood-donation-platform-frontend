@@ -21,10 +21,10 @@ function MyProfile() {
             <ProfilePage
                 profile={user}
                 activeRequests={allBloodRequests}
-                requestHistory={user.requests}
+                requestHistory={allBloodRequests}
                 donorInformation={user}
                 assignedDonationRequests={assignments?.data ?? []}
-                donationHistory={user.assignments}
+                donationHistory={assignments?.data ?? []}
             />
         </AuthGuard>
     )

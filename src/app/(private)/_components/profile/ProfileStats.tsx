@@ -13,7 +13,8 @@ interface ProfileStatsProps {
 
 export function ProfileStats({ donor }: ProfileStatsProps) {
     const donorProfile = donor?.donorProfile;
-    const donorAssignments = donorProfile.assignments as BloodDonationAssignment[]
+    console.log(donorProfile)
+    const donorAssignments = donor.assignments as BloodDonationAssignment[] ?? []
 
     const stats = [
         {

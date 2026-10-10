@@ -9,10 +9,14 @@ import DonorGrid from "../_components/findDonor/donor-grid";
 import { useDonors } from "@/hooks/donor.hook";
 import { useSearchParams } from "next/navigation";
 import { useQueryFilter } from "@/hooks/query.hook";
+import { useAuth } from "@/context/auth.context";
+import { User } from "@/types/user.types";
 
 
 export default function FindDonorsPage() {
     const { getQuery } = useQueryFilter();
+
+    const user: User = useAuth()
 
     const searchTerm = getQuery("searchTerm");
     const city = getQuery("city");
