@@ -1,36 +1,175 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FASTBlood --- Blood Donation Platform
 
-## Getting Started
+FASTBlood connects blood donors with people who need blood. This README
+summarizes the frontend routes and backend API endpoints listed in the
+supplied API documentation.
 
-First, run the development server:
+## Base URLs
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-   **Frontend:** https://fastbloodprojectpfrontend.vercel.app
+-   **Backend API:** https://fastbloodprojectpfrontend.vercel.app/api/v1
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+API endpoint paths below are relative to the backend API base URL.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Main Frontend Routes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Public Pages
 
-## Learn More
+-   `/home` --- Home page
+-   `/about` --- About the platform
+-   `/how-it-works` --- How the platform works
 
-To learn more about Next.js, take a look at the following resources:
+### Authentication Pages
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   `/login` --- Sign in
+-   `/signup` --- Register
+-   `/verify-email` --- Verify email using OTP
+-   `/forgot-password` --- Start password recovery
+-   `/reset-password` --- Reset password
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### User Pages
 
-## Deploy on Vercel
+-   `/find-blood` --- Find donors
+-   `/all-requests` --- Browse blood requests
+-   `/become-donor` --- Apply to become a donor
+-   `/blood-request` --- Create a blood request
+-   `/my-donations` --- View donation assignments or records
+-   `/my-profile` --- View profile
+-   `/my-profile/settings` --- Update profile/settings
+-   `/premium` --- View or start a premium subscription
+-   `/payment` --- Start a payment
+-   `/payment/success` --- Payment completion page
+-   `/payment/failure` --- Payment failure page
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Admin Pages
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-   `/admin/dashboard` --- Admin overview
+-   `/admin/dashboard/assignments` --- Manage assignments
+-   `/admin/dashboard/blood-requests` --- Manage blood requests
+-   `/admin/dashboard/donation-assignments` --- Manage donor assignments
+-   `/admin/dashboard/donations` --- View donation records
+-   `/admin/dashboard/donors` --- Manage donor profiles and applications
+-   `/admin/dashboard/payments` --- View payments
+-   `/admin/dashboard/subscriptions` --- View subscriptions
+-   `/admin/dashboard/users` --- Manage users and roles
+
+## Backend API Endpoints
+
+### Authentication --- `/auth`
+
+  Method   Endpoint                  Purpose
+  -------- ------------------------- -------------------------
+  POST     `/auth/login`             Sign in
+  POST     `/auth/logout`            Log out
+  POST     `/auth/google`            Google login
+  POST     `/auth/forget-password`   Start password recovery
+  POST     `/auth/reset-password`    Reset password
+  POST     `/auth/refresh-token`     Refresh access token
+  POST     `/auth/resend-otp`        Resend verification OTP
+
+### Users --- `/user`
+
+  Method   Endpoint                 Purpose
+  -------- ------------------------ -------------------------------
+  POST     `/user/register`         Register a user
+  POST     `/user/verify-email`     Verify email
+  GET      `/user/me`               Get current user's profile
+  PUT      `/user/update-profile`   Update current user's profile
+
+### Admin --- `/admin`
+
+  Method   Endpoint                       Purpose
+  -------- ------------------------------ ---------------------------
+  GET      `/admin/users`                 List users
+  GET      `/admin/donors`                List donor profiles
+  PATCH    `/admin/update/status/:id`     Update user status
+  PATCH    `/admin/update/role/:id`       Update user role
+  PATCH    `/admin/delete/user/:id`       Delete/deactivate a user
+  PUT      `/admin/profile-approve/:id`   Process donor application
+  GET      `/admin/subscriptions`         List subscriptions
+  GET      `/admin/payments`              List payments
+
+### Blood Requests --- `/blood`
+
+  Method   Endpoint                      Purpose
+  -------- ----------------------------- -----------------------------
+  POST     `/blood/new-request`          Create a blood request
+  PATCH    `/blood/update-request/:id`   Update blood request status
+  GET      `/blood/view-request/:id`     View a request
+  GET      `/blood/all`                  List blood requests
+
+### Donations --- `/donation`
+
+  -----------------------------------------------------------------------------------
+  Method                  Endpoint                            Purpose
+  ----------------------- ----------------------------------- -----------------------
+  POST                    `/donation/new-assignment`          Create a donor
+                                                              assignment
+
+  GET                     `/donation/view-assignment/:id`     View an assignment
+
+  POST                    `/donation/new-record`              Create a donation
+                                                              record
+
+  PATCH                   `/donation/update-assignment/:id`   Update assignment
+                                                              status
+
+  GET                     `/donation/all`                     List all assignments
+
+  GET                     `/donation/donor/assignments`       Get assignments for the
+                                                              signed-in donor
+
+  GET                     `/donation/records`                 Get donation records
+  -----------------------------------------------------------------------------------
+
+### Donors --- `/donor`
+
+  Method   Endpoint                            Purpose
+  -------- ----------------------------------- ---------------------------
+  POST     `/donor/become-donor`               Apply to become a donor
+  GET      `/donor/profile/:id`                Get a donor profile
+  GET      `/donor/find-donor`                 Find/list donor profiles
+  PUT      `/donor/upadate/availability/:id`   Update donor availability
+
+### Payments and Subscriptions --- `/subscription`
+
+  -----------------------------------------------------------------------------------------
+  Method                  Endpoint                                  Purpose
+  ----------------------- ----------------------------------------- -----------------------
+  POST                    `/subscription/create-checkout-session`   Create a checkout
+                                                                    session
+
+  POST                    `/subscription/webhook`                   Handle payment provider
+                                                                    webhook
+
+  POST                    `/subscription/bkash-payment`             Start a bKash payment
+
+  GET                     `/subscription/bkash/callback`            Handle bKash callback
+
+  GET                     `/subscription/payment/:id`               Retrieve payment data
+  -----------------------------------------------------------------------------------------
+
+## Access and Security Notes
+
+-   The API uses JWT/auth middleware, but the supplied documentation
+    does not specify the exact cookie/header transport.
+-   Endpoint permissions vary by role: `ADMIN`, `DONOR`, and
+    `REQUESTER`. Check the backend router before relying on a route
+    being public or available to a particular role.
+-   The supplied router shows `/donor/find-donor` without active
+    authentication middleware.
+-   The supplied router does not show authentication middleware on
+    `/subscription/payment/:id`; verify payment ownership and
+    authorization before exposing payment data.
+-   The donor availability route is documented as
+    `/donor/upadate/availability/:id` (spelled `upadate`). Use that
+    exact path unless the backend route is corrected.
+-   The documentation does not provide request/response schemas,
+    status-code details, or a dedicated payment-failure API endpoint.
+
+## Notes
+
+-   Frontend routes are page URLs; backend endpoints are API URLs.
+-   Replace `:id` in an endpoint with the relevant resource ID.
+-   Confirm frontend route groups and actual route files against the
+    current Next.js `src/app` directory.
