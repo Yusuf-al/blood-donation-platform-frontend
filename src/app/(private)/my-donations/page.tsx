@@ -140,10 +140,10 @@ export default function MyDonationRequestsPage() {
         }
     };
 
-    const user = useAuth()
+    const { user } = useAuth()
 
 
-    const donorAssigments = user.assignments as BloodDonationAssignment[]
+    const donorAssigments = user!.assignments as BloodDonationAssignment[] ?? []
 
     return <RoleGuard roles={["DONOR"]}>
         <main className="min-h-screen bg-slate-50">

@@ -6,16 +6,19 @@ import { ProfilePage } from '../_components/ProfilePage';
 import { User } from '@/types/user.types';
 import { useDonorAssignments } from '@/hooks/donor.hook';
 import { useBloodRequest, useGetBloodRequest } from '@/hooks/br.hook';
+import { Spinner } from '@/components/ui/spinner';
 
 function MyProfile() {
-    const user = useAuth()
+    const { user, isPending } = useAuth()
 
     const { data: assignments } = useDonorAssignments()
     const { data: bloodRequest } = useGetBloodRequest(null)
 
     const allBloodRequests = bloodRequest?.data?.data ?? []
 
-
+    if (isPending) {
+        return <Spinner />
+    }
     return (
         <AuthGuard>
             <ProfilePage
